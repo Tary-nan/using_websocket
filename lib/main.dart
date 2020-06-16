@@ -69,28 +69,26 @@ class _MyHomePageState extends State<MyHomePage> {
   ///  - new_game
   /// -------------------------------------------------------------------
   _onGameDataReceived(message) {
-    print('_onGameDataReceived');
     switch (message["type"]) {
       ///
       /// A chaque fois qu'un utilisateur rejoint, nous devons
       ///   * enregistrer la nouvelle liste de joueurs
       ///   * rafraîchir la liste des joueurs
       ///
-      case "players_list":
-        playersList = message["data"];
-        
-        // force rafraîchissement
-        setState(() {});
+      case "newConnection":
+        print('newConnection: A la nouvelle collection je recupere les group de tchat ququel un user est affecter');
         break;
 
-      ///
-      /// Quand une partie est démarrée par un autre joueur,
-      /// nous acceptons la partie et nous dirigeons vers
-      /// l'écran 2 (jeu)
-      /// Comme nous ne sommes pas l'initiateur du jeu,
-      /// nous utiliserons les "O" pour jouer
-      ///
-      case 'new_game':
+      case 'getMessages':
+        if(message["chatType"] == 'groupe'){
+          print('push vers la page de tchat for groupe');
+        }else if(message["chatType"] == 'chat'){
+          print('push vers la page de tchat for Chat');
+        }
+        break;
+
+      case "initChat":
+        print('newConnection: A la nouvelle collection je recupere les group de tchat ququel un user est affecter');
         break;
     }
   }
@@ -138,13 +136,13 @@ class _MyHomePageState extends State<MyHomePage> {
   /// pouvons afficher la liste des tous les joueurs.
   /// ------------------------------------------------------
   _onGameJoin() {
-    // manager.sendNewConnection(action: "newConnection", idClient: "1");
-    manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
-    // tchat.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
-    // tchat.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");
-    // tchat.sendGetMessagesSingleTchat(action: "getMessages", chatType: "chat", initiatorId: "1", peerId: "2");
-    // tchat.sendAddGroupMessage(action: "addGroupMessage", idClient: "1", idArticle: "2", content: "Course for beginer in flutter");
-    // tchat.sendAddChatMessage(action: "addChatMessage", commentatorId: "1", peerId: "2", content: "Course for beginer in flutter");
+    manager.sendNewConnection(action: "newConnection", idClient: "1");
+    //manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
+    manager.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
+    // manager.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");
+    // manager.sendGetMessagesSingleTchat(action: "getMessages", chatType: "chat", initiatorId: "1", peerId: "2");
+    // manager.sendAddGroupMessage(action: "addGroupMessage", idClient: "1", idArticle: "2", content: "Course for beginer in flutter");
+    // manager.sendAddChatMessage(action: "addChatMessage", commentatorId: "1", peerId: "2", content: "Course for beginer in flutter");
     
     /// Forcer un rafraîchissement 
     setState(() {});
