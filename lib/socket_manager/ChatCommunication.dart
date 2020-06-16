@@ -58,6 +58,7 @@ class TchatCommunication  implements Manager{
     /// récupérons l'objet JSON correspondant
     ///
     Map message = json.decode(serverMessage);
+    print(message);
     switch(message["type"]){
       ///
       /// Quand la communication est établie, le serveur

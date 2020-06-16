@@ -9,7 +9,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -138,13 +137,13 @@ class _MyHomePageState extends State<MyHomePage> {
   /// pouvons afficher la liste des tous les joueurs.
   /// ------------------------------------------------------
   _onGameJoin() {
-    // manager.sendNewConnection(action: "newConnection", idClient: "1");
-    manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
-    // tchat.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
-    // tchat.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");
-    // tchat.sendGetMessagesSingleTchat(action: "getMessages", chatType: "chat", initiatorId: "1", peerId: "2");
-    // tchat.sendAddGroupMessage(action: "addGroupMessage", idClient: "1", idArticle: "2", content: "Course for beginer in flutter");
-    // tchat.sendAddChatMessage(action: "addChatMessage", commentatorId: "1", peerId: "2", content: "Course for beginer in flutter");
+    //manager.sendNewConnection(action: "newConnection", idClient: "1");
+    //manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
+    // manager.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
+    // manager.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");
+    // manager.sendGetMessagesSingleTchat(action: "getMessages", chatType: "chat", initiatorId: "1", peerId: "2");
+     manager.sendAddGroupMessage(action: "addGroupMessage", idClient: "1", idArticle: "2", content: "Course for beginer in flutter");
+    // manager.sendAddChatMessage(action: "addChatMessage", commentatorId: "1", peerId: "2", content: "Course for beginer in flutter");
     
     /// Forcer un rafraîchissement 
     setState(() {});
