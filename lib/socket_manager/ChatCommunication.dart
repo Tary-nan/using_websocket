@@ -3,6 +3,9 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:sprinkle/Manager.dart';
+import 'package:using_websocket/socket_manager/models/get_message_model.dart';
+import 'package:using_websocket/socket_manager/models/get_message_tchat_model.dart';
+import 'package:using_websocket/socket_manager/models/message_tchatSingle.dart';
 import 'package:using_websocket/socket_manager/models/tchat_model.dart';
 import 'package:using_websocket/socket_manager/services/tchat_service.dart';
 import 'package:using_websocket/socket_manager/websocket_helper.dart';
@@ -21,6 +24,12 @@ class TchatCommunication  implements Manager{
   
   BehaviorSubject<List<TchatModel>> _subjectTchatModel = BehaviorSubject<List<TchatModel>>();
   Stream<List<TchatModel>> get collectionTchatModel$ => _subjectTchatModel.stream;
+
+  BehaviorSubject<GetMessageInGroup> _subjectgetMessageGroup = BehaviorSubject<GetMessageInGroup>();
+  Stream<GetMessageInGroup> get collectiongetMessageGroup$ => _subjectgetMessageGroup.stream;
+
+  BehaviorSubject<GetMessageInChat> _subjectgetMessageChat = BehaviorSubject<GetMessageInChat>();
+  Stream<GetMessageInChat> get collectiongetMessageChat$ => _subjectgetMessageChat.stream;
     
 
   String _chatType = "";
@@ -63,7 +72,9 @@ class TchatCommunication  implements Manager{
       ///
       /// Quand la communication est établie, le serveur
       /// Nous cablons les differents events
-      ///
+    ///
+    
+    /// 
       case 'newConnection':
         {
           if(message['status']){
@@ -77,12 +88,40 @@ class TchatCommunication  implements Manager{
       case 'getMessages':
         {
           _chatType = message['chatType'];
-          if(message['status']){
-
+          if(message['status'] && message['chatType'] == 'groupe'){
+            GetMessageInGroup messageGroup = ServiceTchat.getMessageInGroup(message);
+            _subjectgetMessageGroup.add(messageGroup);
+          }else if(message['status'] && message['chatType'] == 'chat'){
+            GetMessageInChat messageChat = ServiceTchat.getMessageInChat(message);
+            _subjectgetMessageChat.add(messageChat);
           }
-
         }
         break;
+
+        case 'initChat':
+        {
+          // Sans la vue update the list to group
+          if(message['status'] && message['setChat']){//GetMessageInChat
+          InitChatModel initChat = ServiceTchat.initChat(message);
+          print(initChat);
+          }else{
+            
+
+          }
+        }
+        break;
+
+        case 'addGroup':
+        {
+          // Sans la vue update the list to group
+          if(message['status']){
+            List response = message['tableau'];
+            List<TchatModel> data =  ServiceTchat.tchatList(response);
+            _subjectTchatModel.add(data);
+          }
+        }
+        break;
+
 
       ///
       /// Pour tout autre message entrant,
@@ -104,7 +143,6 @@ class TchatCommunication  implements Manager{
     /// Quand un joueur rejoint, nous devons mémoriser son nom
     ///
     if (action == 'newConnection'){
-      //_playerName = data;
       _clientID = idClient;
     }
 
@@ -212,5 +250,7 @@ void sendAddChatMessage({String action, String commentatorId, String peerId, Str
   @override
   void dispose() {
     _subjectTchatModel.close();
+    _subjectgetMessageGroup.close();
+    _subjectgetMessageChat.close();
   }
 }
