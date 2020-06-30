@@ -9,7 +9,7 @@ WebSocketsNotifications sockets = new WebSocketsNotifications();
 ///
 /// Remplacez la ligne suivante par l'adresse IP et le numéro de port de votre serveur
 ///
-const String _SERVER_ADDRESS = "ws://192.168.1.101:4000";
+const String _SERVER_ADDRESS = "wss://nannews-nodejs.nan.ci";
 // const String _SERVER_ADDRESS = "ws://192.168.2.1:4000";
 // const String _SERVER_ADDRESS = "ws://192.168.50.139:8080";
 

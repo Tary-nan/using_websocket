@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sprinkle/Overseer.dart';
 import 'package:sprinkle/Provider.dart';
+import 'package:using_websocket/manager.dart/state.dart';
+import 'package:using_websocket/page/home.dart';
 import 'package:using_websocket/socket_manager/ChatCommunication.dart';
 import 'package:sprinkle/SprinkleExtension.dart';
 
@@ -14,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       data: Overseer()
-      .register<TchatCommunication>(()=> TchatCommunication())
+      .register<TchatCommunication>(()=> TchatCommunication())//StateBloc
+      .register<StateBloc>(()=> StateBloc())//StateBloc
       ,
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: MainApp(),
       ),
     );
   }
@@ -45,13 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    print('debut');
     ///
     /// Demandons d'être notifié pour chaque message
     /// envoyé par le serveur
     ///
     Future.delayed(Duration.zero,(){
-       manager = context.fetch<TchatCommunication>();
-       manager.addListener(_onGameDataReceived);
+      
     });
     //tchat.addListener(_onGameDataReceived);
   }
@@ -136,9 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
   /// pouvons afficher la liste des tous les joueurs.
   /// ------------------------------------------------------
   _onGameJoin() {
+    print('onTap');
     manager.sendNewConnection(action: "newConnection", idClient: "1");
     //manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
-    manager.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
+    // manager.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
     // manager.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");
     // manager.sendGetMessagesSingleTchat(action: "getMessages", chatType: "chat", initiatorId: "1", peerId: "2");
     // manager.sendAddGroupMessage(action: "addGroupMessage", idClient: "1", idArticle: "2", content: "Course for beginer in flutter");
@@ -155,6 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    manager = context.fetch<TchatCommunication>();
+    manager.addListener(_onGameDataReceived);
+    manager.sendNewConnection(action: "newConnection", idClient: "1");
+
     return new SafeArea(
       bottom: false,
       top: false,
