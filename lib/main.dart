@@ -11,7 +11,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -139,8 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// pouvons afficher la liste des tous les joueurs.
   /// ------------------------------------------------------
   _onGameJoin() {
-    print('onTap');
-    manager.sendNewConnection(action: "newConnection", idClient: "1");
+    //manager.sendNewConnection(action: "newConnection", idClient: "1");
     //manager.sendGetMessagesGroup(action: "getMessages", chatType: "groupe", idClient: "1", idArticle: "1");
     // manager.sendInitSingleChat(action: "initChat", peerNumber: "88482118", initiatorId: "1", peerId: "2");
     // manager.sendAddGroup(action: "addGroup", idClient: "1", nameClient: "koffi", idArticle: "2", nomArticle: "Flutter to developpe Application", image: "kofii.png");

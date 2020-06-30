@@ -11,7 +11,7 @@ WebSocketsNotifications sockets = new WebSocketsNotifications();
 ///
 const String _SERVER_ADDRESS = "wss://nannews-nodejs.nan.ci";
 // const String _SERVER_ADDRESS = "ws://192.168.2.1:4000";
-// const String _SERVER_ADDRESS = "ws://192.168.50.139:8080";
+// const String _SERVER_ADDRESS = "ws://192.168.50.114:4000";
 
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets = new WebSocketsNotifications._internal();
@@ -59,6 +59,7 @@ class WebSocketsNotifications {
       ///
       _channel.stream.listen(_onReceptionOfMessageFromServer);
     } catch(e){
+      throw "erreur de connaction";
       ///
       /// Gestion des erreurs globales
       /// TOD
