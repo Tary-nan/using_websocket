@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sprinkle/SprinkleExtension.dart';
 import 'package:using_websocket/manager.dart/state.dart';
 
@@ -8,21 +9,23 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xff8489f0),
+        elevation: 0,
         leading: Container(
             margin: EdgeInsets.only(left: 25),
             child: Icon(
-              Icons.arrow_back,
+              Icons.home,
               color: Colors.white,
             )),
         actions: <Widget>[
           Container(
+            padding: EdgeInsets.only(top: 10),
             margin: EdgeInsets.only(right: 25),
-            child: Icon(Icons.favorite_border),
+            child: Text('MyProf', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           )
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xff8489f0),
       body: LayoutStarts(),
     );
   }
@@ -31,43 +34,21 @@ class MainApp extends StatelessWidget {
 class LayoutStarts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        CarDetailsAnimation(),
-        CustomBottomSheet(),
-        // RentButton(),
-      ],
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: SvgPicture.asset("assets/math.svg", width: MediaQuery.of(context).size.width/2.1,)
+          ),
+          CarDetailsAnimation(),
+          CustomBottomSheet(),
+        ],
+      ),
     );
   }
 }
 
-// class RentButton extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Align(
-//       alignment: Alignment.bottomRight,
-//       child: SizedBox(
-//         width: 200,
-//         child: FlatButton(
-//           onPressed: () {},
-//           child: Text(
-//             "Rent Car",
-//             style: TextStyle(
-//                 color: Colors.white,
-//                 fontSize: 18,
-//                 letterSpacing: 1.4,
-//                 fontFamily: "arial"),
-//           ),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.only(topLeft: Radius.circular(35)),
-//           ),
-//           color: Colors.black,
-//           padding: EdgeInsets.all(25),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class CarDetailsAnimation extends StatefulWidget {
   @override
@@ -118,7 +99,9 @@ class _CarDetailsAnimationState extends State<CarDetailsAnimation>
         initialData: StateProvider().isAnimating,
         stream: manager.animationStatus,
         builder: (context, snapshot) {
-          snapshot.data ? forward() : reverse();
+          snapshot.data 
+          ? forward() 
+          : reverse();
           return ScaleTransition(
             scale: scaleAnimation,
             child: FadeTransition(
@@ -135,15 +118,17 @@ class CarDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(left: 30),
           child: _carTitle(),
         ),
+        SizedBox(height: 15),
         Container(
           width: double.infinity,
-          child: CarCarousel(),
+          child: SearchCard(),
         )
       ],
     ));
@@ -157,36 +142,36 @@ class CarDetails extends StatelessWidget {
           text: TextSpan(
               style: TextStyle(color: Colors.white, fontSize: 38),
               children: [
-                TextSpan(text: "Mitshibishi"),
+                TextSpan(text: "Trouvez le Professeur"),
                 TextSpan(text: "\n"),
                 TextSpan(
-                    text: "Pajero",
+                    text: "Parfait",
                     style: TextStyle(fontWeight: FontWeight.w700)),
               ]),
         ),
         SizedBox(height: 10),
-        RichText(
-          text: TextSpan(style: TextStyle(fontSize: 16), children: [
-            TextSpan(
-                text: "10\$",
-                style: TextStyle(color: Colors.grey[20])),
-            TextSpan(
-              text: " / day",
-              style: TextStyle(color: Colors.grey),
-            )
-          ]),
-        ),
+        // RichText(
+        //   text: TextSpan(style: TextStyle(fontSize: 16), children: [
+        //     TextSpan(
+        //         text: "10\$",
+        //         style: TextStyle(color: Colors.grey[20])),
+        //     TextSpan(
+        //       text: " / day",
+        //       style: TextStyle(color: Colors.grey),
+        //     )
+        //   ]),
+        // ),
       ],
     );
   }
 }
 
-class CarCarousel extends StatefulWidget {
+class SearchCard extends StatefulWidget {
   @override
-  _CarCarouselState createState() => _CarCarouselState();
+  _SearchCardlState createState() => _SearchCardlState();
 }
 
-class _CarCarouselState extends State<CarCarousel> {
+class _SearchCardlState extends State<SearchCard> {
   
 
   @override
@@ -194,6 +179,53 @@ class _CarCarouselState extends State<CarCarousel> {
     return Container(
       child: Column(
         children: <Widget>[
+
+          Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width / 1.1,
+            decoration: BoxDecoration(
+               color: Color(0xfff1f1f1),
+               borderRadius: BorderRadius.all(Radius.circular(10))
+            ),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  flex: 4,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 3, left: 10),
+                    alignment: Alignment.center, child: Row(
+                    children: [
+                      Flexible(child: Icon(Icons.search)),
+                      Flexible(
+                        flex: 2,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "essayer Maths, l'informatique"
+                          ),
+                        ),
+                      ),
+                    ],
+                  ))),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Text("Rechercher", style: TextStyle(color: Colors.white),),
+                    decoration: BoxDecoration(
+                      color: Colors.pink.withOpacity(.8),
+                      borderRadius: BorderRadius.all(Radius.circular(5))
+                      
+                    ),
+                  )),
+              ]
+            ),
+          ),
+
+
+          
   
         ],
       ),
@@ -251,7 +283,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet>
       left: 0,
       child: GestureDetector(
         onTap: () {
-           controller.isCompleted ? reverseAnimation() : forwardAnimation();
+           controller.isCompleted 
+           ? reverseAnimation() 
+           : forwardAnimation();
         },
         onVerticalDragEnd: (DragEndDetails dragEndDetails) {
           //upward drag
@@ -290,8 +324,8 @@ class SheetContainer extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 offerDetails(sheetItemHeight),
-                specifications(sheetItemHeight),
-                features(sheetItemHeight),
+                offerDetails(sheetItemHeight),
+                offerDetails(sheetItemHeight),
                 SizedBox(height: 220),
               ],
             ),
@@ -341,39 +375,38 @@ class SheetContainer extends StatelessWidget {
     );
   }
 
-  features(double sheetItemHeight) {
-    return Container(
-      padding: EdgeInsets.only(top: 15, left: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Features",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   offerDetails(double sheetItemHeight) {
     return Container(
-      padding: EdgeInsets.only(top: 15, left: 40),
+      padding: EdgeInsets.only(top: 15, left: 20, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Offer Details",
+            "Apprenez en toute confiance",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w700,
               fontSize: 18,
             ),
           ),
+          Row(children: [
+            Flexible(child: Container(
+              margin: EdgeInsets.all(10),
+              height: sheetItemHeight,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.3),
+                borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
+            )),
+            Flexible(child: Container(
+              margin: EdgeInsets.all(10),
+              height: sheetItemHeight,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.3),
+                borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
+            )),
+          ],)
         ],
       ),
     );
